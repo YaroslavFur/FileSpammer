@@ -61,7 +61,7 @@ int main()
 
 		while (i >= myCeil(spamFiles * percent))
 		{
-			printProgressBar(percent, 30, 0);
+			printProgressBar(percent, 50, 0);
 			percent += 0.01;
 		}
 
