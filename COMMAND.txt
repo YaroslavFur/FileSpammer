@@ -1,0 +1,7 @@
+gcc functions/printSmth.c functions/simpleMath.c functions/spammerMath.c functions/getInput.c Main.c -o fileSpammer2.exe
+
+github зберегти прогу
+ввід рядка
+збір інфи з назви проги
+мультипоточність
+доробити вивід к-сті рядків в різних аспектах
