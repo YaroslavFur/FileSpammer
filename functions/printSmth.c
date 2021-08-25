@@ -26,7 +26,7 @@ void printProgressBar(double percent, int steps, int newLineAfterBar)
 		else
 			printf(" ");
 	}
-	printf("]");
+	printf("] %d%%", myRound(percent * 100));
 	if (newLineAfterBar)
 		printf("\n");
 }
