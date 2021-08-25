@@ -118,13 +118,13 @@ void getInput(int* spamFiles, int* spamRows, char spamRow[])
 	}
 	else
 	{
-		printf("\nManual selected\n\n"
-			"> Files:  ");
+		printf("\nManual selected\n\n");
+		printf("> Files:   ");
 		scanf("%d", spamFiles);
-		printf("> Row:    ");
+		printf("> Content: ");
 		scanf("\n%255[^\n]", spamRow);		// catch excessive enter and read spamRow up to 255 symbols or user press enter
-		printf("> Memory: ");
-		int megabytes = scanfMbAndRows(MAX_DIGITS_IN_MB_VALUE, "> Memory: ", *spamFiles);
+		printf("> Memory:  ");
+		int megabytes = scanfMbAndRows(MAX_DIGITS_IN_MB_VALUE, "> Memory:  ", *spamFiles);
 		*spamRows = megabytesToRows(*spamFiles, megabytes, strlen(spamRow));
 		printf("Manual settings:\n");
 		printSettings(*spamFiles, spamRow, rowsToMegabytes(*spamFiles, *spamRows, strlen(spamRow)));

@@ -12,7 +12,8 @@ void printMessageError(char message[])
 // prints settings of spammer to be run
 void printSettings(int spamFiles, char spamRow[], int megabytes)
 {
-	printf("\nFiles = %d\nRow = %s\nMemory = %d MB\n\n", spamFiles, spamRow, megabytes);
+	printf("\nFiles =   %d\nContent = %s\nMemory =  %d MB\n\n", 
+			spamFiles, spamRow, megabytes);
 }
 
 // prints progress bar with percentage with selected settings ([======    ] 60%)
