@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
+#include "simpleMath.h"
 #include "printSmth.h"
 #include "spammerMath.h"
 
@@ -87,9 +88,12 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 		
 		megabytes = takeNumbersFromCharArray(code, digits - 1);
 		megabytesInEachFile = megabytes / (double)spamFiles;
-
-		printf(" MB = ");
-		printf("%0.1lf MB in each file", megabytesInEachFile);
+		
+		for (int i = 0, j = myDigits(megabytes); i < maxDigits - j; i++)
+		{
+			printf(" ");
+		}
+		printf(" MB = %0.1lf MB in each file", megabytesInEachFile);
 		if (megabytesInEachFile >= 1000)
 			printf(" (isn't it too many?)");
 		printf("\r%s", textInLineBeforeNumber);
@@ -110,11 +114,11 @@ void getInput(int* spamFiles, int* spamRows, char spamRow[])
 	printf("> Continue with auto settings? (y/n)\t");
 	if (_getch() == 'y')
 	{
-		printf("\nAuto selected\n");
+		printf("\nAuto selected\n\n");
 	}
 	else
 	{
-		printf("\nManual selected\n"
+		printf("\nManual selected\n\n"
 			"> Files:  ");
 		scanf("%d", spamFiles);
 		printf("> Row:    ");
