@@ -6,9 +6,11 @@
 
 #define MAX_DIGITS_IN_MB_VALUE 7
 
-int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles, char spamRow[])
+// allows user to enter data with dynamical transfer it to another value and showing to user with each key press update (12_ => 12_ is 24, 123_ => 123_ is 246)
+int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 {
-	int ch, secondCh, megabytes, rows;
+	int ch, secondCh, megabytes;
+	double megabytesInEachFile;
 	char code[32];
 	int current = 0, digits = 0;
 
@@ -73,7 +75,7 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles, 
 		}
 		
 		printf("\r");
-		for (int i = 0; i < (strlen(textInLineBeforeNumber) + maxDigits * 3 + 30) / 2; i++)	// +50 про всяк випадок
+		for (int i = 0; i < (strlen(textInLineBeforeNumber) + maxDigits * 2 + 50) / 2; i++)	// +50 just in case
 		{
 			printf("  ");
 		}
@@ -84,9 +86,13 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles, 
 		}
 		
 		megabytes = takeNumbersFromCharArray(code, digits - 1);
-		rows = megabytesToRows(spamFiles, megabytes, strlen(spamRow)) * spamFiles;
+		megabytesInEachFile = megabytes / (double)spamFiles;
 
-		printf(" MB = %lld Rows in all files\r%s", rows, textInLineBeforeNumber);
+		printf(" MB = ");
+		printf("%0.1lf MB in each file", megabytesInEachFile);
+		if (megabytesInEachFile >= 1000)
+			printf(" (isn't it too many?)");
+		printf("\r%s", textInLineBeforeNumber);
 		for (int i = 0; i < current; i++)
 		{
 			printf("%c", code[i]);
@@ -96,7 +102,7 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles, 
 	return megabytes;
 }
 
-
+// gets user settings for program if user wants
 void getInput(int* spamFiles, int* spamRows, char spamRow[])
 {
 	printf("Auto settings:\n");
@@ -112,13 +118,11 @@ void getInput(int* spamFiles, int* spamRows, char spamRow[])
 			"> Files:  ");
 		scanf("%d", spamFiles);
 		printf("> Row:    ");
-		scanf("%s", spamRow);
+		scanf("\n%255[^\n]", spamRow);		// catch excessive enter and read spamRow up to 255 symbols or user press enter
 		printf("> Memory: ");
-		int megabytes = scanfMbAndRows(MAX_DIGITS_IN_MB_VALUE, "> Memory: ", *spamFiles, spamRow);
+		int megabytes = scanfMbAndRows(MAX_DIGITS_IN_MB_VALUE, "> Memory: ", *spamFiles);
 		*spamRows = megabytesToRows(*spamFiles, megabytes, strlen(spamRow));
-
 		printf("Manual settings:\n");
 		printSettings(*spamFiles, spamRow, rowsToMegabytes(*spamFiles, *spamRows, strlen(spamRow)));
-		getchar();									// ловить лишній ентер
 	}
 }

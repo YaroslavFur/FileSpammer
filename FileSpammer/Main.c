@@ -17,10 +17,11 @@
 #define SPAM_ROWS 1000000
 #define SPAM_ROW "SPAM"
 
+// here goes spamming process
 int main()
 {	
 	int spamFiles = SPAM_FILES, spamRows = SPAM_ROWS;
-	char spamRow[] = SPAM_ROW;
+	char spamRow[256] = SPAM_ROW;
 
 	getInput(&spamFiles, &spamRows, spamRow);
 
@@ -31,6 +32,8 @@ int main()
 	FILE* f;
 
 	double percent = 0.0;
+	printProgressBar(percent, 30, 0);
+
 	for (int i = 1, count = 1; i <= spamFiles; i++)
 	{
 		if (myDigits(i) > count)

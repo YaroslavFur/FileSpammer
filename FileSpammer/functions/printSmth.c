@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "simplemath.h"
 
+// prints special message about error
 void printMessageError(char message[])
 {
 	printf("\n\n%s\n"
@@ -8,11 +9,13 @@ void printMessageError(char message[])
 		"yaroslav.fur.w3@gmail.com\n", message);
 }
 
+// prints settings of spammer to be run
 void printSettings(int spamFiles, char spamRow[], int megabytes)
 {
-	printf("\nFiles = %d\nRow = \"%s\"\nMegabytes = %d\n\n", spamFiles, spamRow, megabytes);
+	printf("\nFiles = %d\nRow = %s\nMemory = %d MB\n\n", spamFiles, spamRow, megabytes);
 }
 
+// prints progress bar with percentage with selected settings ([======    ] 60%)
 void printProgressBar(double percent, int steps, int newLineAfterBar)
 {
 	int step = myRound(percent * steps);

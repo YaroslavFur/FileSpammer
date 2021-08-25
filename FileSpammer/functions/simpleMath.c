@@ -1,5 +1,6 @@
 #define EPSILON 0.000001
 
+// gets quantity of digits in number
 int myDigits(long long input)
 {
 	int output = 0;
@@ -11,6 +12,7 @@ int myDigits(long long input)
 	return output;
 }
 
+// rounds double to closer int (4.49 => 4, 4.5 => 5)
 int myRound(double inputToRound)
 {
 	int outputRounded = inputToRound;
@@ -19,6 +21,7 @@ int myRound(double inputToRound)
 	return outputRounded;
 }
 
+// rounds double to higher int (4.2 => 5, 4.9 => 5, 5 => 5)
 int myCeil(double inputToCeil)
 {
 	int outputCeiled = inputToCeil;
