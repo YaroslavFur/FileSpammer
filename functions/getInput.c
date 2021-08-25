@@ -111,8 +111,8 @@ void getInput(int* spamFiles, int* spamRows, char spamRow[])
 		printf("\nManual selected\n"
 			"> Files:  ");
 		scanf("%d", spamFiles);
-		//printf("> Row:    ");
-		//scanf("%s", &spamRow);
+		printf("> Row:    ");
+		scanf("%s", spamRow);
 		printf("> Memory: ");
 		int megabytes = scanfMbAndRows(MAX_DIGITS_IN_MB_VALUE, "> Memory: ", *spamFiles, spamRow);
 		*spamRows = megabytesToRows(*spamFiles, megabytes, strlen(spamRow));

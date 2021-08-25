@@ -55,7 +55,7 @@ int main()
 
 		for (int rowCount = 1; rowCount <= spamRows; rowCount++)
 		{
-			fprintf(f, "%s\n", SPAM_ROW);
+			fprintf(f, "%s\n", spamRow);
 		}
 		fclose(f);
 
