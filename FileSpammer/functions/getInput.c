@@ -112,21 +112,27 @@ void getInput(int* spamFiles, int* spamRows, char spamRow[])
 	printf("Auto settings:\n");
 	printSettings(*spamFiles, spamRow, rowsToMegabytes(*spamFiles, *spamRows, strlen(spamRow)));
 	printf("> Continue with auto settings? (y/n)\t");
-	if (_getch() == 'y')
+
+	char decision = ' ';
+	while (decision != 'y' && decision != 'n')
 	{
-		printf("\nAuto selected\n\n");
-	}
-	else
-	{
-		printf("\nManual selected\n\n");
-		printf("> Files:   ");
-		scanf("%d", spamFiles);
-		printf("> Content: ");
-		scanf("\n%255[^\n]", spamRow);		// catch excessive enter and read spamRow up to 255 symbols or user press enter
-		printf("> Memory:  ");
-		int megabytes = scanfMbAndRows(MAX_DIGITS_IN_MB_VALUE, "> Memory:  ", *spamFiles);
-		*spamRows = megabytesToRows(*spamFiles, megabytes, strlen(spamRow));
-		printf("Manual settings:\n");
-		printSettings(*spamFiles, spamRow, rowsToMegabytes(*spamFiles, *spamRows, strlen(spamRow)));
+		decision = _getch();
+		if (decision == 'y')
+		{
+			printf("\nAuto selected\n\n");
+		}
+		if (decision == 'n')
+		{
+			printf("\nManual selected\n\n");
+			printf("> Files:   ");
+			scanf("%d", spamFiles);
+			printf("> Content: ");
+			scanf("\n%255[^\n]", spamRow);		// catch excessive enter and read spamRow up to 255 symbols or user press enter
+			printf("> Memory:  ");
+			int megabytes = scanfMbAndRows(MAX_DIGITS_IN_MB_VALUE, "> Memory:  ", *spamFiles);
+			*spamRows = megabytesToRows(*spamFiles, megabytes, strlen(spamRow));
+			printf("Manual settings:\n");
+			printSettings(*spamFiles, spamRow, rowsToMegabytes(*spamFiles, *spamRows, strlen(spamRow)));
+		}
 	}
 }
