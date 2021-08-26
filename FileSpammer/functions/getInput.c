@@ -13,11 +13,15 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 	int ch, secondCh, megabytes;
 	double megabytesInEachFile;
 	char code[32];
-	int current = 0, digits = 0;
+	int current = 0, digits = 0, flagNeedToUpdate = 0;
 
 	while (1)
 	{
 		ch = _getch();
+		flagNeedToUpdate = 0;
+
+		if ((ch >= 48 && ch <= 57) || ch == 8 || (ch == 0 || ch == 224))
+			flagNeedToUpdate = 1;
 
 		if (ch >= 48 && ch <= 57) // 0-9
 		{
@@ -74,32 +78,35 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 			printf("\n");
 			break;
 		}
-		
-		printf("\r");
-		for (int i = 0; i < (strlen(textInLineBeforeNumber) + maxDigits * 2 + 50) / 2; i++)	// +50 just in case
+
+		if (flagNeedToUpdate)
 		{
-			printf("  ");
-		}
-		printf("\r%s", textInLineBeforeNumber);
-		for (int i = 0; i < digits; i++)
-		{
-			printf("%c", code[i]);
-		}
-		
-		megabytes = takeNumbersFromCharArray(code, digits - 1);
-		megabytesInEachFile = megabytes / (double)spamFiles;
-		
-		for (int i = 0, j = myDigits(megabytes); i < maxDigits - j; i++)
-		{
-			printf(" ");
-		}
-		printf(" MB = %0.1lf MB in each file", megabytesInEachFile);
-		if (megabytesInEachFile >= 1000)
-			printf(" (isn't it too many?)");
-		printf("\r%s", textInLineBeforeNumber);
-		for (int i = 0; i < current; i++)
-		{
-			printf("%c", code[i]);
+			printf("\r");
+			for (int i = 0; i < (strlen(textInLineBeforeNumber) + maxDigits * 2 + 50) / 2; i++)	// +50 just in case
+			{
+				printf("  ");
+			}
+			printf("\r%s", textInLineBeforeNumber);
+			for (int i = 0; i < digits; i++)
+			{
+				printf("%c", code[i]);
+			}
+
+			megabytes = takeNumbersFromCharArray(code, digits - 1);
+			megabytesInEachFile = megabytes / (double)spamFiles;
+
+			for (int i = 0, j = myDigits(megabytes); i < maxDigits - j; i++)
+			{
+				printf(" ");
+			}
+			printf(" MB = %0.1lf MB in each file", megabytesInEachFile);
+			if (megabytesInEachFile >= 1000)
+				printf(" (isn't it too many?)");
+			printf("\r%s", textInLineBeforeNumber);
+			for (int i = 0; i < current; i++)
+			{
+				printf("%c", code[i]);
+			}
 		}
 	}
 
