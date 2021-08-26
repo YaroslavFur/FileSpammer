@@ -19,7 +19,7 @@ void printSettings(int spamFiles, char spamRow[], int megabytes)
 // prints progress bar with percentage with selected settings ([======    ] 60%)
 void printProgressBar(double percent, int steps, int newLineAfterBar)
 {
-	int step = myRound(percent * steps);
+	int step = roundMy(percent * steps);
 	if (!newLineAfterBar)
 		printf("\r");
 	printf("[");
@@ -30,7 +30,7 @@ void printProgressBar(double percent, int steps, int newLineAfterBar)
 		else
 			printf(" ");
 	}
-	printf("] %d%%", myRound(percent * 100));
+	printf("] %d%%", roundMy(percent * 100));
 	if (newLineAfterBar)
 		printf("\n");
 }

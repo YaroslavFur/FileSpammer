@@ -13,23 +13,24 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 	int ch, secondCh, megabytes;
 	double megabytesInEachFile;
 	char code[32];
-	int current = 0, digits = 0, flagNeedToUpdate = 0;
+	int current = 0, numOfDigits = 0, flagNeedToUpdate = 0;
 
 	while (1)
 	{
 		ch = _getch();
-		flagNeedToUpdate = 0;
 
 		if ((ch >= 48 && ch <= 57) || ch == 8 || (ch == 0 || ch == 224))
 			flagNeedToUpdate = 1;
+		else
+			flagNeedToUpdate = 0;
 
 		if (ch >= 48 && ch <= 57) // 0-9
 		{
-			if (digits < maxDigits)
+			if (numOfDigits < maxDigits)
 			{
-				if (current < digits)
+				if (current < numOfDigits)
 				{
-					for (int i = digits; i > current; i--)
+					for (int i = numOfDigits; i > current; i--)
 					{
 						code[i] = code[i - 1];
 					}
@@ -37,19 +38,19 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 
 				code[current] = ch;
 				current++;
-				digits++;
+				numOfDigits++;
 			}
 		}
 		if (ch == 8) // backspace
 		{
 			if (current > 0)
 			{
-				for (int i = current - 1; i < digits; i++)
+				for (int i = current - 1; i < numOfDigits; i++)
 				{
 					code[i] = code[i + 1];
 				}
 				current--;
-				digits--;
+				numOfDigits--;
 			}
 		}
 		if (ch == 0 || ch == 224) // left right up down delete
@@ -57,10 +58,10 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 			secondCh = _getch();
 			if (secondCh == 83)	// delete
 			{
-				if (digits > 0 && current != digits)
+				if (numOfDigits > 0 && current != numOfDigits)
 				{
-					digits--;
-					for (int i = current; i < digits; i++)
+					numOfDigits--;
+					for (int i = current; i < numOfDigits; i++)
 					{
 						code[i] = code[i + 1];
 					}
@@ -70,7 +71,7 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 				if (current > 0)
 					current--;
 			if (secondCh == 77)	// right
-				if (current < digits)
+				if (current < numOfDigits)
 					current++;
 		}
 		if (ch == 13) // enter
@@ -85,20 +86,20 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 		if (flagNeedToUpdate)
 		{
 			printf("\r");
-			for (int i = 0; i < (strlen(textInLineBeforeNumber) + maxDigits * 2 + 50) / 2; i++)	// +50 just in case
+			for (int i = 0; i < (strlen(textInLineBeforeNumber) + maxDigits * 2 + 60) / 10; i++)	// +50 just in case
 			{
-				printf("  ");
+				printf("          ");
 			}
 			printf("\r%s", textInLineBeforeNumber);
-			for (int i = 0; i < digits; i++)
+			for (int i = 0; i < numOfDigits; i++)
 			{
 				printf("%c", code[i]);
 			}
 
-			megabytes = takeNumbersFromCharArray(code, digits - 1);
+			megabytes = takeNumbersFromCharArray(code, numOfDigits - 1);
 			megabytesInEachFile = megabytes / (double)spamFiles;
 
-			for (int i = 0, j = myDigits(megabytes); i < maxDigits - j; i++)
+			for (int i = 0, j = digitsMy(megabytes); i < maxDigits - j; i++)
 			{
 				printf(" ");
 			}

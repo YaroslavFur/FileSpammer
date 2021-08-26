@@ -14,13 +14,13 @@
 #define ZERO_SYMBOL_LENGTH_1 1
 
 #define SPAM_FILES 100
-#define SPAM_ROWS 1000000
+#define SPAM_MB 500
 #define SPAM_ROW "SPAM"
 
 // here goes spamming process
 int main()
 {	
-	int spamFiles = SPAM_FILES, spamRows = SPAM_ROWS;
+	int spamFiles = SPAM_FILES, spamRows = megabytesToRows(SPAM_FILES, SPAM_MB, strlen(SPAM_ROW));
 	char spamRow[256] = SPAM_ROW;
 
 	getInput(&spamFiles, &spamRows, spamRow);
@@ -28,7 +28,7 @@ int main()
 	printf("Please wait, spamming...\n\n");
 
 	char* name = (char*)calloc(1 + ZERO_SYMBOL_LENGTH_1, sizeof(char));
-	char* tmpname;
+	char* tmpName;
 	FILE* f;
 
 	double percent = 0.0;
@@ -36,16 +36,16 @@ int main()
 
 	for (int i = 1, count = 1; i <= spamFiles; i++)
 	{
-		if (myDigits(i) > count)
+		if (digitsMy(i) > count)
 		{
 			count++;
-			tmpname = (char*)realloc(name, (count + DOTTXT_LENGTH_4 + ZERO_SYMBOL_LENGTH_1) * sizeof(char));
-			if (tmpname == NULL)
+			tmpName = (char*)realloc(name, (count + DOTTXT_LENGTH_4 + ZERO_SYMBOL_LENGTH_1) * sizeof(char));
+			if (tmpName == NULL)
 			{
 				printMessageError("Smth wrong with memory...");
 				break;
 			}
-			name = tmpname;
+			name = tmpName;
 		}
 		itoa(i, name, 10);
 		name = strcat(name, ".txt");
@@ -59,14 +59,15 @@ int main()
 		for (int rowCount = 1; rowCount <= spamRows; rowCount++)
 		{
 			fprintf(f, "%s\n", spamRow);
+			while (((i - 1) * spamRows) + rowCount >= ceilMy(spamRows * spamFiles * percent)) // if current printed rows > all rows*percent,
+			{
+				printProgressBar(percent, 30, 0); // print progressBar with this percent
+				percent += 0.01;
+			}
 		}
 		fclose(f);
 
-		while (i >= myCeil(spamFiles * percent))
-		{
-			printProgressBar(percent, 30, 0);
-			percent += 0.01;
-		}
+		
 
 		if (i == spamFiles)
 		{

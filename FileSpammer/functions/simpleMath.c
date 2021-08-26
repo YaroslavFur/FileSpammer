@@ -1,7 +1,7 @@
 #define EPSILON 0.000001
 
 // gets quantity of digits in number
-int myDigits(long long input)
+int digitsMy(long long input)
 {
 	int output = 0;
 	while (input > 0)
@@ -13,7 +13,7 @@ int myDigits(long long input)
 }
 
 // rounds double to closer int (4.49 => 4, 4.5 => 5)
-int myRound(double inputToRound)
+int roundMy(double inputToRound)
 {
 	int outputRounded = inputToRound;
 	if (inputToRound - outputRounded >= 0.5 - EPSILON)
@@ -22,7 +22,7 @@ int myRound(double inputToRound)
 }
 
 // rounds double to higher int (4.2 => 5, 4.9 => 5, 5 => 5)
-int myCeil(double inputToCeil)
+int ceilMy(double inputToCeil)
 {
 	int outputCeiled = inputToCeil;
 	if (inputToCeil - outputCeiled > EPSILON)
