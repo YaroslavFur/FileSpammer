@@ -73,10 +73,13 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 				if (current < digits)
 					current++;
 		}
-		if (ch == 13)
+		if (ch == 13) // enter
 		{
-			printf("\n");
-			break;
+			if (code[0] >= 48 && code[0] <= 57) // if user has entered some number - finish
+			{
+				printf("\n");
+				break;
+			}
 		}
 
 		if (flagNeedToUpdate)
