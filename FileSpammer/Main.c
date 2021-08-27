@@ -25,31 +25,13 @@ int main()
 
 	getInput(&spamFiles, &spamRows, spamRow);
 
+
 	char* name = (char*)calloc(1 + ZERO_SYMBOL_LENGTH_1, sizeof(char));
 	char* tmpName;
 
 	int rowsInSet;
-	double sizeOfOneFile = rowsToMegabytes(spamFiles, spamRows, strlen(spamRow)) / (double)spamFiles;
-	if (sizeOfOneFile <= 0.01) // if size of one file <= 1 KB
-	{
-		rowsInSet = spamRows;
-	}
-	else if (sizeOfOneFile <= 1) // if size of one file <= 1 MB
-	{
-		rowsInSet = spamRows / 1000;
-	}
-	else // if size of one file >1 MB
-	{
-		rowsInSet = spamRows / 1000;
-	}
-	char* setOfRows = (char*)calloc((strlen(spamRow) + 1) * rowsInSet + ZERO_SYMBOL_LENGTH_1, sizeof(char));
-	char* spamRowWithNewlineCharacter = (char*)calloc((strlen(spamRow) + 1) + ZERO_SYMBOL_LENGTH_1, sizeof(char));
-	spamRowWithNewlineCharacter = strcat(spamRow, "\n");
-	for (int i = 1; i < rowsInSet; i++) // create set of rows because it's much faster to fprintf set of rows that lots of rows by one
-	{
-		setOfRows = strcat(setOfRows, spamRowWithNewlineCharacter);
-	}
-
+	char* setOfRows = getSetOfRows(&spamRows, spamRow, &rowsInSet);
+	
 	FILE* f;
 	double percent = 0.0;
 	
@@ -71,7 +53,7 @@ int main()
 			name = tmpName;
 		}
 		itoa(i, name, 10);
-		name = strcat(name, ".txt");
+		strcat(name, ".txt");
 
 		if ((f = fopen(name, "w")) == NULL)
 		{
@@ -81,7 +63,7 @@ int main()
 
 		for (int rowCount = 1; rowCount <= spamRows; rowCount += rowsInSet)
 		{
-			fprintf(f, "%s\n", setOfRows);
+			fprintf(f, "%s", setOfRows);
 			while (((i - 1) * spamRows) + rowCount >= ceilMy(spamRows * spamFiles * percent)) // if current printed rows > all rows*percent,
 			{
 				printProgressBar(percent, 30, 0); // print progressBar with this percent
@@ -89,8 +71,6 @@ int main()
 			}
 		}
 		fclose(f);
-
-		
 
 		if (i == spamFiles)
 		{

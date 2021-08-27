@@ -1,4 +1,11 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "simpleMath.h"
+
+#define ZERO_SYMBOL_LENGTH_1 1
 #define NEWLINE_CHARACTER_IN_TXTFILE_LENGTH_2 2
+#define MAX_ROWS_IN_SETOFROWS 10000
 
 // transfers rows from each file to Megabytes of all files
 int rowsToMegabytes(int spamFiles, int rows, int rowLenght)
@@ -19,7 +26,7 @@ int megabytesToRows(int spamFiles, int megabytes, int rowLenght)
 	rows /= rowLenght + NEWLINE_CHARACTER_IN_TXTFILE_LENGTH_2;						// transfer to Rows
 	rows /= spamFiles;																// divide rows by all files, so get quantity in one file
 
-	return (int)rows;
+	return rows;
 }
 
 // returns number from array of chars, where one char is one digit (char arr[] = {'1', '7', '3'} => int output = 173)
@@ -31,4 +38,23 @@ long long takeNumbersFromCharArray(char arr[], int endSymbol)
 		output += (arr[i] - 48) * j;
 	}
 	return output;
+}
+
+// creates set of rows because it's much faster to fprintf set of rows that lots of rows by one
+char* getSetOfRows(int* spamRows, char spamRow[], int* rowsInSet)
+{
+	int setsInFile = ceilMy(*spamRows / (double)MAX_ROWS_IN_SETOFROWS);
+	*rowsInSet = *spamRows / setsInFile;
+	char* setOfRows = (char*)calloc((strlen(spamRow) + 1) * (*rowsInSet) + ZERO_SYMBOL_LENGTH_1, sizeof(char));
+
+	char* spamRowWithNewlineCharacter = (char*)calloc((strlen(spamRow) + 1) + ZERO_SYMBOL_LENGTH_1, sizeof(char));
+	strcat(spamRowWithNewlineCharacter, spamRow);
+	strcat(spamRowWithNewlineCharacter, "\n");
+
+	for (int i = 0; i < *rowsInSet; i++) 
+	{
+		strcat(setOfRows, spamRowWithNewlineCharacter);
+	}
+
+	return setOfRows;
 }
