@@ -68,11 +68,23 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 				}
 			}
 			if (secondCh == 75)	// left
+			{
 				if (current > 0)
 					current--;
+			}
 			if (secondCh == 77)	// right
+			{
 				if (current < numOfDigits)
 					current++;
+			}
+			if (secondCh == 71)	// home
+			{
+				current = 0;
+			}
+			if (secondCh == 79)	// end
+			{
+				current = numOfDigits;
+			}
 		}
 		if (ch == 13) // enter
 		{

@@ -49,6 +49,7 @@ int main()
 	{
 		setOfRows = strcat(setOfRows, spamRowWithNewlineCharacter);
 	}
+
 	FILE* f;
 	double percent = 0.0;
 	
