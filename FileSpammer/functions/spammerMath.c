@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 #include "simpleMath.h"
 
 #define ZERO_SYMBOL_LENGTH_1 1
 #define NEWLINE_CHARACTER_IN_TXTFILE_LENGTH_2 2
-#define MAX_ROWS_IN_SETOFROWS 10000
+#define MAX_ROWS_IN_SETOFROWS 50000
 
 // transfers rows from each file to Megabytes of all files
 int rowsToMegabytes(int spamFiles, int rows, int rowLenght)
@@ -41,10 +40,10 @@ long long takeNumbersFromCharArray(char arr[], int endSymbol)
 }
 
 // creates set of rows because it's much faster to fprintf set of rows that lots of rows by one
-char* getSetOfRows(int* spamRows, char spamRow[], int* rowsInSet)
+char* getSetOfRows(int spamRows, char spamRow[], int* rowsInSet)
 {
-	int setsInFile = ceilMy(*spamRows / (double)MAX_ROWS_IN_SETOFROWS);
-	*rowsInSet = *spamRows / setsInFile;
+	int setsInFile = ceilMy(spamRows / (double)MAX_ROWS_IN_SETOFROWS);
+	*rowsInSet = spamRows / setsInFile;
 	char* setOfRows = (char*)calloc((strlen(spamRow) + 1) * (*rowsInSet) + ZERO_SYMBOL_LENGTH_1, sizeof(char));
 
 	char* spamRowWithNewlineCharacter = (char*)calloc((strlen(spamRow) + 1) + ZERO_SYMBOL_LENGTH_1, sizeof(char));

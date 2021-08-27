@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "functions/printSmth.h"
 #include "functions/simpleMath.h"
 #include "functions/spammerMath.h"
@@ -22,20 +23,22 @@ int main()
 {	
 	int spamFiles = SPAM_FILES, spamRows = megabytesToRows(SPAM_FILES, SPAM_MB, strlen(SPAM_ROW));	// num of files to create, num of rows in ONE file
 	char spamRow[256] = SPAM_ROW;
+	clock_t time;
 
 	getInput(&spamFiles, &spamRows, spamRow);
 
+	time = clock();
 
+	printf("Initialization...");
 	char* name = (char*)calloc(1 + ZERO_SYMBOL_LENGTH_1, sizeof(char));
 	char* tmpName;
-
-	int rowsInSet;
-	char* setOfRows = getSetOfRows(&spamRows, spamRow, &rowsInSet);
-	
 	FILE* f;
 	double percent = 0.0;
 	
-	printf("Please wait, spamming...\n\n");
+	int rowsInSet;
+	char* setOfRows = getSetOfRows(spamRows, spamRow, &rowsInSet);
+		
+	printf("\rPlease wait, spamming...\n\n");
 
 	printProgressBar(percent, 30, 0);
 
@@ -75,15 +78,19 @@ int main()
 		if (i == spamFiles)
 		{
 			printProgressBar(1, 30, 0); // just to be sure :3
+
+			time = clock() - time;
+			double timeTaken = ((double)time) / CLOCKS_PER_SEC;
+
 			printf("\n\n");
 			printf("Spammed successfully\n"
-				"Have a great day!\n");
+				"Time taken: %0.1lf seconds\n"
+				"Have a great day!\n", timeTaken);
 		}
 	}
 
 	free(name);
 	
-
 	_getch();
 	return 0;
 }
