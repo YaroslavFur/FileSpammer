@@ -7,12 +7,23 @@
 
 #define MAX_DIGITS_IN_MB_VALUE 7
 
-// allows user to enter data with dynamical transfer it to another value and showing to user with each key press update (12_ => 12_ is 24, 123_ => 123_ is 246)
-int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
+void dynamicOutputMemory(int megabytes, int spamFiles)
 {
-	int ch, secondCh, megabytes;
+	double megabytesInEachFile = megabytes / (double)spamFiles;
+	printf(" MB = %0.1lf MB in each file", megabytesInEachFile);
+	if (megabytesInEachFile >= 1000)
+		printf(" (isn't it too many?)");
+}
+
+void dynamicOutputNothing(int number, int argument)
+{}
+
+// allows user to enter data with dynamical transfer it to another value and showing to user with each key press update (12_ => 12_ is 24, 123_ => 123_ is 246)
+int dynamicIO(char textInLineBeforeNumber[], void (*outputFunc)(int, int), int argument)
+{
+	int ch, secondCh, number;
 	double megabytesInEachFile;
-	char code[32];
+	char code[MAX_DIGITS_IN_MB_VALUE + 1];
 	int current = 0, numOfDigits = 0, flagNeedToUpdate = 0;
 
 	while (1)
@@ -26,7 +37,7 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 
 		if (ch >= 48 && ch <= 57) // 0-9
 		{
-			if (numOfDigits < maxDigits)
+			if (numOfDigits < MAX_DIGITS_IN_MB_VALUE)
 			{
 				if (current < numOfDigits)
 				{
@@ -88,7 +99,7 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 		}
 		if (ch == 13) // enter
 		{
-			if (code[0] >= 48 && code[0] <= 57) // if user has entered some number - finish
+			if (number > 0) // if entered number is more than 0 - finish
 			{
 				printf("\n");
 				break;
@@ -98,7 +109,7 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 		if (flagNeedToUpdate)
 		{
 			printf("\r");
-			for (int i = 0; i < (strlen(textInLineBeforeNumber) + maxDigits * 2 + 60) / 10; i++)	// +50 just in case
+			for (int i = 0; i < (strlen(textInLineBeforeNumber) + MAX_DIGITS_IN_MB_VALUE * 2 + 60) / 10; i++)	// +50 just in case
 			{
 				printf("          ");
 			}
@@ -108,16 +119,15 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 				printf("%c", code[i]);
 			}
 
-			megabytes = takeNumbersFromCharArray(code, numOfDigits - 1);
-			megabytesInEachFile = megabytes / (double)spamFiles;
+			number = takeNumbersFromCharArray(code, numOfDigits - 1);
 
-			for (int i = 0, j = digitsMy(megabytes); i < maxDigits - j; i++)
+			for (int i = 0, j = numOfDigits; i < MAX_DIGITS_IN_MB_VALUE - j; i++)
 			{
 				printf(" ");
 			}
-			printf(" MB = %0.1lf MB in each file", megabytesInEachFile);
-			if (megabytesInEachFile >= 1000)
-				printf(" (isn't it too many?)");
+
+			outputFunc(number, argument);
+
 			printf("\r%s", textInLineBeforeNumber);
 			for (int i = 0; i < current; i++)
 			{
@@ -126,7 +136,7 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 		}
 	}
 
-	return megabytes;
+	return number;
 }
 
 // gets user settings for program if user wants
@@ -148,11 +158,11 @@ void getInput(int* spamFiles, long long* spamRows, char spamRow[])
 		{
 			printf("\nManual selected\n\n");
 			printf("> Files:   ");
-			scanf("%d", spamFiles);
+			*spamFiles = dynamicIO("> Files:   ", dynamicOutputNothing, 0);
 			printf("> Content: ");
-			scanf("\n%255[^\n]", spamRow);		// catch excessive enter and read spamRow up to 255 symbols or user press enter
+			scanf("\n%255[^\n]", spamRow); // catch excessive enter and read spamRow up to 255 symbols or user press enter
 			printf("> Memory:  ");
-			int megabytes = scanfMbAndRows(MAX_DIGITS_IN_MB_VALUE, "> Memory:  ", *spamFiles);
+			int megabytes = dynamicIO("> Memory:  ", dynamicOutputMemory, *spamFiles);
 			*spamRows = megabytesToRows(*spamFiles, megabytes, strlen(spamRow));
 			printf("Manual settings:\n");
 			printSettings(*spamFiles, spamRow, rowsToMegabytes(*spamFiles, *spamRows, strlen(spamRow)));

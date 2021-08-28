@@ -94,7 +94,6 @@ int main()
 	free(name);
 	free(setOfRows);
 	
-	printf("\n\nsizeof(int) = %d, long = %d, long long = %d\n", sizeof(int), sizeof(long), sizeof(long long));
 	_getch();
 	return 0;
 }
