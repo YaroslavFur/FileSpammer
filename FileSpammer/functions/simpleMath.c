@@ -22,9 +22,9 @@ int roundMy(double inputToRound)
 }
 
 // rounds double to higher int (4.2 => 5, 4.9 => 5, 5 => 5)
-int ceilMy(double inputToCeil)
+long long ceilMy(double inputToCeil)
 {
-	int outputCeiled = inputToCeil;
+	long long outputCeiled = inputToCeil;
 	if (inputToCeil - outputCeiled > EPSILON)
 		outputCeiled++;
 	return outputCeiled;

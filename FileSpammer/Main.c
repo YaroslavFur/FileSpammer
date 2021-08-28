@@ -21,7 +21,8 @@
 // here goes spamming process
 int main()
 {	
-	int spamFiles = SPAM_FILES, spamRows = megabytesToRows(SPAM_FILES, SPAM_MB, strlen(SPAM_ROW));	// num of files to create, num of rows in ONE file
+	int spamFiles = SPAM_FILES;
+	long long spamRows = megabytesToRows(SPAM_FILES, SPAM_MB, strlen(SPAM_ROW));	// num of files to create, num of rows in ONE file
 	char spamRow[256] = SPAM_ROW;
 	clock_t time;
 
@@ -35,8 +36,8 @@ int main()
 	FILE* f;
 	double percent = 0.0;
 	
-	int rowsInSet;
-	char* setOfRows = getSetOfRows(spamRows, spamRow, &rowsInSet);
+	int spamSets;
+	char* setOfRows = getSetOfRows(spamRows, spamRow, &spamSets);
 		
 	printf("\rPlease wait, spamming...\n\n");
 
@@ -64,10 +65,10 @@ int main()
 			break;
 		}
 
-		for (int rowCount = 1; rowCount <= spamRows; rowCount += rowsInSet)
+		for (int setCount = 1; setCount <= spamSets; setCount += 1)
 		{
 			fprintf(f, "%s", setOfRows);
-			while (((i - 1) * spamRows) + rowCount >= ceilMy(spamRows * spamFiles * percent)) // if current printed rows > all rows*percent,
+			while ((((long long)(i - 1)) * spamSets) + setCount >= ceilMy(spamSets * spamFiles * percent)) // if current printed sets > all sets*percent,
 			{
 				printProgressBar(percent, 30, 0); // print progressBar with this percent
 				percent += 0.01;
@@ -80,17 +81,20 @@ int main()
 			printProgressBar(1, 30, 0); // just to be sure :3
 
 			time = clock() - time;
-			double timeTaken = ((double)time) / CLOCKS_PER_SEC;
+			double timeTaken = ((double)time) / (double)CLOCKS_PER_SEC;
 
 			printf("\n\n");
 			printf("Spammed successfully\n"
-				"Time taken: %0.1lf seconds\n"
-				"Have a great day!\n", timeTaken);
+					"Time taken: ");
+			printTime(timeTaken);
+			printf("Have a great day!\n", timeTaken);
 		}
 	}
 
 	free(name);
+	free(setOfRows);
 	
+	printf("\n\nsizeof(int) = %d, long = %d, long long = %d\n", sizeof(int), sizeof(long), sizeof(long long));
 	_getch();
 	return 0;
 }

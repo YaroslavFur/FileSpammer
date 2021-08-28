@@ -130,7 +130,7 @@ int scanfMbAndRows(int maxDigits, char textInLineBeforeNumber[], int spamFiles)
 }
 
 // gets user settings for program if user wants
-void getInput(int* spamFiles, int* spamRows, char spamRow[])
+void getInput(int* spamFiles, long long* spamRows, char spamRow[])
 {
 	printf("Auto settings:\n");
 	printSettings(*spamFiles, spamRow, rowsToMegabytes(*spamFiles, *spamRows, strlen(spamRow)));

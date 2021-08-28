@@ -34,3 +34,21 @@ void printProgressBar(double percent, int steps, int newLineAfterBar)
 	if (newLineAfterBar)
 		printf("\n");
 }
+
+// prints the time in good format
+void printTime(double timeInSecons)
+{
+	if (timeInSecons >= 3600)
+	{
+		int hours = timeInSecons / 3600;
+		printf("%d hours, ", hours);
+		timeInSecons -= ((int)hours) * 3600;
+	}
+	if (timeInSecons >= 60)
+	{
+		int minutes = timeInSecons / 60;
+		printf("%d minutes, ", minutes);
+		timeInSecons -= ((int)minutes) * 60;
+	}
+	printf("%0.1lf seconds\n", timeInSecons);
+}

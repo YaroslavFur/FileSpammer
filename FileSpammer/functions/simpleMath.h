@@ -3,6 +3,6 @@
 
 int digitsMy(long long input);
 int roundMy(double inputToRound);
-int ceilMy(double inputToCeil);
+long long ceilMy(double inputToCeil);
 
 #endif /*SIMPLEMATH_H*/

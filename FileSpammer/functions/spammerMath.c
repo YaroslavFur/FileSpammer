@@ -7,7 +7,7 @@
 #define MAX_ROWS_IN_SETOFROWS 50000
 
 // transfers rows from each file to Megabytes of all files
-int rowsToMegabytes(int spamFiles, int rows, int rowLenght)
+int rowsToMegabytes(int spamFiles, long long rows, int rowLenght)
 {
 	double megabytes = rows + 1;													// +1 to cancel problems with int
 	megabytes *= spamFiles;															// take rows from all files
@@ -18,7 +18,7 @@ int rowsToMegabytes(int spamFiles, int rows, int rowLenght)
 }
 
 // transfers Megabytes of all files to rows in each file
-int megabytesToRows(int spamFiles, int megabytes, int rowLenght)
+long long megabytesToRows(int spamFiles, int megabytes, int rowLenght)
 {
 	double rows = megabytes;
 	rows *= 1000000;																// transfer to bytes
@@ -40,20 +40,22 @@ long long takeNumbersFromCharArray(char arr[], int endSymbol)
 }
 
 // creates set of rows because it's much faster to fprintf set of rows that lots of rows by one
-char* getSetOfRows(int spamRows, char spamRow[], int* rowsInSet)
+char* getSetOfRows(long long spamRows, char spamRow[], int* spamSets)
 {
-	int setsInFile = ceilMy(spamRows / (double)MAX_ROWS_IN_SETOFROWS);
-	*rowsInSet = spamRows / setsInFile;
-	char* setOfRows = (char*)calloc((strlen(spamRow) + 1) * (*rowsInSet) + ZERO_SYMBOL_LENGTH_1, sizeof(char));
+	*spamSets = ceilMy(spamRows / (double)MAX_ROWS_IN_SETOFROWS);
+	int rowsInSet = spamRows / *spamSets;
+	char* setOfRows = (char*)calloc((strlen(spamRow) + 1) * (rowsInSet) + ZERO_SYMBOL_LENGTH_1, sizeof(char));
 
 	char* spamRowWithNewlineCharacter = (char*)calloc((strlen(spamRow) + 1) + ZERO_SYMBOL_LENGTH_1, sizeof(char));
 	strcat(spamRowWithNewlineCharacter, spamRow);
 	strcat(spamRowWithNewlineCharacter, "\n");
 
-	for (int i = 0; i < *rowsInSet; i++) 
+	for (int i = 0; i < rowsInSet; i++) 
 	{
 		strcat(setOfRows, spamRowWithNewlineCharacter);
 	}
 
-	return setOfRows;
+	free(spamRowWithNewlineCharacter);
+
+	return setOfRows; 
 }
